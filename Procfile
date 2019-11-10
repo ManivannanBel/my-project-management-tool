@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -jar target/Project_Managment_System-0.0.1-SNAPSHOT.jar -Dserver.port=$PORT $JAR_OPTS
