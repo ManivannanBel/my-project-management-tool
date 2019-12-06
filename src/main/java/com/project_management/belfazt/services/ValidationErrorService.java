@@ -23,4 +23,13 @@ public class ValidationErrorService {
 		return null;
 	}
 	
+	public ResponseEntity<?> validateNullValue(String data) {
+		if(data == null || data.length() == 0) {
+			Map<String, String> errorMap = new HashMap<String, String>();
+			errorMap.put("error", "field is empty");
+			return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
+		}
+		return null;
+	}
+	
 }

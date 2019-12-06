@@ -37,13 +37,24 @@ public class User implements UserDetails{
 	private String username;
 	@NotBlank(message = "please enter your full name")
 	private String fullname;
+	@JsonIgnore
 	@NotBlank(message = "password field is required")
 	private String password;
 	@Transient
+	@JsonIgnore
 	private String confirmPassword;
 	private Date created_at;
 	private Date updated_at;
+	private Date last_login;
 	
+	public Date getLast_login() {
+		return last_login;
+	}
+
+	public void setLast_login(Date last_login) {
+		this.last_login = last_login;
+	}
+
 	//OneToMany with project
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "user")
 	private List<Project> projects = new ArrayList<Project>();
