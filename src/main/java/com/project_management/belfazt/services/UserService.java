@@ -1,5 +1,7 @@
 package com.project_management.belfazt.services;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,8 +35,15 @@ public class UserService {
 			
 		} catch (Exception e) {
 			throw new UsernameAlreadyExistsException("Username '"+newUser.getUsername()+"' already exist");
-		}
+		}	
+	}
+	
+	public void updateLastLogin(String username) {
+		User user = userRepository.findByUsername(username);
 		
+		user.setLast_login(new Date());
+		
+		userRepository.save(user);
 		
 	}
 	
