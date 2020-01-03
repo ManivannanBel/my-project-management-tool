@@ -1,6 +1,8 @@
 package com.project_management.belfazt.services;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,8 +49,13 @@ public class UserService {
 		
 	}
 	
-	public void getUsername(String query, String username) {
-		
+	public List<String> getUsername(String query, String username) {
+		List<User> userList = userRepository.findAllMatchingUsernames(query, username);
+		ArrayList<String> usernameResults = new ArrayList<String>();
+		for(User user : userList) {
+			usernameResults.add(user.getUsername());
+		}
+		return usernameResults;
 	}
 	
 }

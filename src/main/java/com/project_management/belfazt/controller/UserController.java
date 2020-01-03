@@ -3,6 +3,7 @@ package com.project_management.belfazt.controller;
 import static com.project_management.belfazt.security.SecurityConstants.TOKEN_PREFIX;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -15,10 +16,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project_management.belfazt.model.User;
@@ -27,7 +28,8 @@ import com.project_management.belfazt.payload.LoginRequest;
 import com.project_management.belfazt.security.JWTTokenProvider;
 import com.project_management.belfazt.services.UserService;
 import com.project_management.belfazt.services.ValidationErrorService;
-import com.project_management.belfazt.validator.UserValidator;;
+import com.project_management.belfazt.validator.UserValidator;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -68,11 +70,13 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result){
-		//validate passwords
-		userValidator.validate(user, result);
+		System.err.println(user.getFullname()+"\n"+user.getUsername()+"\n"+user.getPassword()+"\n"+user.getConfirmPassword());
 		
 		ResponseEntity<?> errorMap = validationErrorService.validateError(result);
 		if(errorMap!=null) return errorMap;
+		
+		//validate passwords
+		userValidator.validate(user, result);
 		
 		User newUser = userService.saveUser(user);
 		
@@ -80,8 +84,9 @@ public class UserController {
 	}
 	
 	@GetMapping("/searchQuery/{query}")
-	public ResponseEntity<?> getUsers(@RequestParam String query, Principal principal){
-		return new ResponseEntity<String>("", HttpStatus.OK);
+	public ResponseEntity<?> getUsers(@PathVariable("query") String query, Principal principal){
+		List<String> userList = userService.getUsername(query, principal.getName());
+		return new ResponseEntity<List<String>>(userList, HttpStatus.OK);
 	}
 	
 }
