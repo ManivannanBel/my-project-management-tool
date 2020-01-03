@@ -47,4 +47,8 @@ public class UserService {
 		
 	}
 	
+	public void getUsername(String query, String username) {
+		
+	}
+	
 }
