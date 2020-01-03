@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.project_management.belfazt.dao.UserRepository;
 import com.project_management.belfazt.model.User;
+import com.project_management.belfazt.payload.UserProfileResponse;
 
 @Service
 public class ProfileService {
@@ -17,18 +18,25 @@ public class ProfileService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public User getUserDetails(String username) {
-		
 		return userRepository.findByUsername(username);
-		
 	}
 	
-	public User updateFullname(String fullname, String username) {
+	public UserProfileResponse getUserProfileDetails(String username) {
+		User user = getUserDetails(username);
+		UserProfileResponse userProfileData = new UserProfileResponse(user.getUsername(), user.getFullname(), user.getCreated_at(), user.getUpdated_at(), user.getLast_login(), user.getProjects());
+		return userProfileData;
+	}
+	
+	public UserProfileResponse updateFullname(String fullname, String username) {
 		
 		User user = getUserDetails(username);
 		
 		user.setFullname(fullname);
 		
-		return userRepository.save(user);
+		userRepository.save(user);
+		
+		UserProfileResponse userProfileData = new UserProfileResponse(user.getUsername(), user.getFullname(), user.getCreated_at(), user.getUpdated_at(), user.getLast_login(), user.getProjects());
+		return userProfileData;
 		
 	}
 	

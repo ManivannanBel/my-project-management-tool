@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project_management.belfazt.model.User;
 import com.project_management.belfazt.payload.UpdateFullnameRequest;
 import com.project_management.belfazt.payload.UpdatePasswordRequest;
+import com.project_management.belfazt.payload.UserProfileResponse;
 import com.project_management.belfazt.services.ProfileService;
 import com.project_management.belfazt.services.ValidationErrorService;
 import com.project_management.belfazt.validator.UserValidator;
@@ -38,9 +39,9 @@ public class ProfileController {
 	@GetMapping("")
 	public ResponseEntity<?> profile(Principal principal){
 		
-		User user = profileService.getUserDetails(principal.getName());
+		UserProfileResponse userProfile = profileService.getUserProfileDetails(principal.getName());
 		
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+		return new ResponseEntity<UserProfileResponse>(userProfile, HttpStatus.OK);
 	}
 	
 	@PutMapping("/updateFullname")
@@ -49,9 +50,9 @@ public class ProfileController {
 		ResponseEntity<?> errorMap = validationErrorService.validateError(result);
 		if(errorMap != null)return errorMap;
 		
-		User user = profileService.updateFullname(request.getFullname(), principal.getName());
+		UserProfileResponse userProfile = profileService.updateFullname(request.getFullname(), principal.getName());
 		
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+		return new ResponseEntity<UserProfileResponse>(userProfile, HttpStatus.OK);
 		
 	}
 	

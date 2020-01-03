@@ -70,17 +70,16 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result){
-		System.err.println(user.getFullname()+"\n"+user.getUsername()+"\n"+user.getPassword()+"\n"+user.getConfirmPassword());
-		
-		ResponseEntity<?> errorMap = validationErrorService.validateError(result);
-		if(errorMap!=null) return errorMap;
 		
 		//validate passwords
 		userValidator.validate(user, result);
 		
-		User newUser = userService.saveUser(user);
+		ResponseEntity<?> errorMap = validationErrorService.validateError(result);
+		if(errorMap!=null) return errorMap;
 		
-		return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
+		userService.saveUser(user);
+		
+		return new ResponseEntity<String>("Account created", HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/searchQuery/{query}")
