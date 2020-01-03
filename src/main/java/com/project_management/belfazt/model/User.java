@@ -63,7 +63,7 @@ public class User implements UserDetails{
 	
 	//OneToMany with teams
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "teamMember")
-	private Set<Team> teams = new HashSet<Team>();
+	private Set<TeamMember> teams = new HashSet<TeamMember>();
 
 
 	public User() {
@@ -96,11 +96,11 @@ public class User implements UserDetails{
 		this.teamProjects = teamProjects;
 	}
 
-	public Set<Team> getTeams() {
+	public Set<TeamMember> getTeams() {
 		return teams;
 	}
 
-	public void setTeams(Set<Team> teams) {
+	public void setTeams(Set<TeamMember> teams) {
 		this.teams = teams;
 	}
 

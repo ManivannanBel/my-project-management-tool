@@ -63,7 +63,7 @@ public class Project {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "project")
 	@JsonIgnore
-	private Set<Team> teamMembers;
+	private Set<TeamMember> teamMembers;
 	
 	private String projectLeader;
 	
@@ -148,12 +148,12 @@ public class Project {
 		this.start_date = start_date;
 	}
 
-	public Set<Team> getTeamMembers() {
+	public Set<TeamMember> getTeamMembers() {
 		return teamMembers;
 	}
 
 
-	public void setTeamMembers(Set<Team> teamMembers) {
+	public void setTeamMembers(Set<TeamMember> teamMembers) {
 		this.teamMembers = teamMembers;
 	}
 

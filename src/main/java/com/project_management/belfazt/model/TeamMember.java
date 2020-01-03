@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Team {
+public class TeamMember {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
