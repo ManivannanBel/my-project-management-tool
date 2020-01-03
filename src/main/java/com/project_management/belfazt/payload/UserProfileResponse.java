@@ -1,7 +1,7 @@
 package com.project_management.belfazt.payload;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import com.project_management.belfazt.model.Project;
 
@@ -11,9 +11,9 @@ public class UserProfileResponse {
 	private Date created_at;
 	private Date updated_at;
 	private Date last_login;
-	private List<Project> projects;
+	private Set<Project> projects;
 	public UserProfileResponse(String username, String fullname, Date created_at, Date updated_at, Date last_login,
-			List<Project> projects) {
+			Set<Project> projects) {
 		super();
 		this.username = username;
 		this.fullname = fullname;
@@ -52,10 +52,10 @@ public class UserProfileResponse {
 	public void setLast_login(Date last_login) {
 		this.last_login = last_login;
 	}
-	public List<Project> getProjects() {
+	public Set<Project> getProjects() {
 		return projects;
 	}
-	public void setProjects(List<Project> projects) {
+	public void setProjects(Set<Project> projects) {
 		this.projects = projects;
 	}
 	

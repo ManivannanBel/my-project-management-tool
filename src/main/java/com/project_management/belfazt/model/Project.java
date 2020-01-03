@@ -1,6 +1,7 @@
 package com.project_management.belfazt.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -55,6 +57,14 @@ public class Project {
 	@JsonIgnore
 	private User user;
 	
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
+	@JsonIgnore
+	private TeamProject teamProject;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "project")
+	@JsonIgnore
+	private Set<Team> teamMembers;
+	
 	private String projectLeader;
 	
 	public Project() {
@@ -68,6 +78,16 @@ public class Project {
 	
 	public String getProjectLeader() {
 		return projectLeader;
+	}
+
+
+	public TeamProject getTeamProject() {
+		return teamProject;
+	}
+
+
+	public void setTeamProject(TeamProject teamProject) {
+		this.teamProject = teamProject;
 	}
 
 
@@ -128,6 +148,14 @@ public class Project {
 		this.start_date = start_date;
 	}
 
+	public Set<Team> getTeamMembers() {
+		return teamMembers;
+	}
+
+
+	public void setTeamMembers(Set<Team> teamMembers) {
+		this.teamMembers = teamMembers;
+	}
 
 
 	public Date getEnd_date() {

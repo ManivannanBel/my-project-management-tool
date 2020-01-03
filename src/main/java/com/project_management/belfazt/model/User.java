@@ -1,9 +1,9 @@
 package com.project_management.belfazt.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,8 +55,17 @@ public class User implements UserDetails{
 
 	//OneToMany with project
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "user")
-	private List<Project> projects = new ArrayList<Project>();
+	private Set<Project> projects = new HashSet<Project>();
 	
+	//OneToMany with team projects
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "teamLeader")
+	private Set<TeamProject> teamProjects = new HashSet<TeamProject>();
+	
+	//OneToMany with teams
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "teamMember")
+	private Set<Team> teams = new HashSet<Team>();
+
+
 	public User() {
 	}
 	
@@ -71,12 +80,28 @@ public class User implements UserDetails{
 	}
 	
 
-	public List<Project> getProjects() {
+	public Set<Project> getProjects() {
 		return projects;
 	}
 
-	public void setProjects(List<Project> projects) {
+	public void setProjects(Set<Project> projects) {
 		this.projects = projects;
+	}
+
+	public Set<TeamProject> getTeamProjects() {
+		return teamProjects;
+	}
+
+	public void setTeamProjects(Set<TeamProject> teamProjects) {
+		this.teamProjects = teamProjects;
+	}
+
+	public Set<Team> getTeams() {
+		return teams;
+	}
+
+	public void setTeams(Set<Team> teams) {
+		this.teams = teams;
 	}
 
 	public Long getId() {
