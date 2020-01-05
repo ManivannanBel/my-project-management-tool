@@ -30,9 +30,12 @@ public class ProjectTaskService {
 			//PT to be added to a specific project, project != null, Backlog exists
 			// X---XBacklog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
 			//Use project service to get the backlog, because you don't have to check correct user access again in this code
+			//Project project = projectService.findProjectByIdentifier(projectIdentifier, username);
 			Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog();
-			System.err.println("\n\n\nbacklog: "+ backlog +"\n\n\n\n");
 			try {
+				
+				//Set Created_By column, it may be created by leader or members
+				projectTask.setCreatedBy(username);
 				
 				projectIdentifier = projectIdentifier.toUpperCase();
 				
@@ -60,10 +63,8 @@ public class ProjectTaskService {
 					projectTask.setStatus("TO_DO");
 				}
 				
-				System.err.println("\n\n"+ projectTask.getSummary() +"\n\n");
 				return projectTaskRepository.save(projectTask);
 			}catch (Exception e) {
-				System.err.println(e);
 				throw new ProjectNotFoundException("Project not found");
 			}
 		}

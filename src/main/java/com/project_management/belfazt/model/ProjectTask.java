@@ -39,6 +39,7 @@ public class ProjectTask {
 	@JoinColumn(name = "backlog_id", updatable = false, nullable = false)
 	@JsonIgnore
 	private Backlog backlog; 
+	private String createdBy;
 	
 	@Column(updatable = false)
 	private String projectIdentifier;
@@ -59,6 +60,14 @@ public class ProjectTask {
 	public ProjectTask() {
 	}
 
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
 	public Long getId() {
 		return id;
 	}
