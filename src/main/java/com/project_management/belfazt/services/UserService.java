@@ -50,6 +50,7 @@ public class UserService {
 	}
 	
 	public List<String> getUsername(String query, String username) {
+		System.err.println("\n\n\nss : "+ query + "\n\n\n");
 		List<User> userList = userRepository.findAllMatchingUsernames(query, username);
 		ArrayList<String> usernameResults = new ArrayList<String>();
 		for(User user : userList) {

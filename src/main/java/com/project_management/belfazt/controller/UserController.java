@@ -84,6 +84,7 @@ public class UserController {
 	
 	@GetMapping("/searchQuery/{query}")
 	public ResponseEntity<?> getUsers(@PathVariable("query") String query, Principal principal){
+		System.err.println(principal.getName());
 		List<String> userList = userService.getUsername(query, principal.getName());
 		return new ResponseEntity<List<String>>(userList, HttpStatus.OK);
 	}

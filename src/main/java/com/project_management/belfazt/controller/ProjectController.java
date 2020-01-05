@@ -66,5 +66,10 @@ public class ProjectController {
 		
 		return new ResponseEntity<String>("Project with ID " + projectId + " was deleted", HttpStatus.OK);
 	}
+	
+	@GetMapping("/{projectId}/team/add/{teamMember}")
+	public ResponseEntity<?> addUserToTeam(@PathVariable String projectId, @PathVariable String teamMember, Principal principal){
+		return new ResponseEntity<String>("", HttpStatus.OK);
+	}
 
 }
