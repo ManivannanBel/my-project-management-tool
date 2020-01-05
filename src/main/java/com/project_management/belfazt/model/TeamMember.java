@@ -18,12 +18,12 @@ public class TeamMember {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "team_member", updatable = false, nullable = false)
 	@JsonIgnore
 	private User teamMember;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "project_id", updatable = false, nullable = false)
 	private Project project;
 	

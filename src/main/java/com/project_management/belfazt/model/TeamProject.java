@@ -18,16 +18,15 @@ public class TeamProject {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "project_id", updatable = false, nullable = false)
 	@JsonIgnore
 	private Project project;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "team_leader", updatable = false, nullable = false)
 	@JsonIgnore
 	private User teamLeader;
-	
 	
 	public User getTeamLeader() {
 		return teamLeader;
@@ -47,4 +46,4 @@ public class TeamProject {
 	public void setProject(Project project) {
 		this.project = project;
 	}
-	}
+}

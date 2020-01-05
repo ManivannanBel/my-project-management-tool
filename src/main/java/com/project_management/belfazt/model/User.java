@@ -44,15 +44,8 @@ public class User implements UserDetails{
 	private Date created_at;
 	private Date updated_at;
 	private Date last_login;
+	private boolean accountDeactivated;
 	
-	public Date getLast_login() {
-		return last_login;
-	}
-
-	public void setLast_login(Date last_login) {
-		this.last_login = last_login;
-	}
-
 	//OneToMany with project
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "user")
 	private Set<Project> projects = new HashSet<Project>();
@@ -65,8 +58,8 @@ public class User implements UserDetails{
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "teamMember")
 	private Set<TeamMember> teams = new HashSet<TeamMember>();
 
-
 	public User() {
+
 	}
 	
 	@PrePersist
@@ -79,6 +72,21 @@ public class User implements UserDetails{
 		this.updated_at = new Date();
 	}
 	
+	public Date getLast_login() {
+		return last_login;
+	}
+
+	public void setLast_login(Date last_login) {
+		this.last_login = last_login;
+	}
+
+	public boolean isAccountDeactivated() {
+		return accountDeactivated;
+	}
+
+	public void setAccountDeactivated(boolean accountDeactivated) {
+		this.accountDeactivated = accountDeactivated;
+	}
 
 	public Set<Project> getProjects() {
 		return projects;
@@ -197,6 +205,5 @@ public class User implements UserDetails{
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
 	
 }

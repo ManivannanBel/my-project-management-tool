@@ -61,17 +61,17 @@ public class Project {
 	@JsonIgnore
 	private TeamProject teamProject;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "project")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
 	@JsonIgnore
 	private Set<TeamMember> teamMembers;
 	
 	private String projectLeader;
+	private boolean isDeleted;
 	
 	public Project() {
 		super();
 	}
-	
-	
+		
 	public Long getId() {
 		return id;
 	}
@@ -80,69 +80,49 @@ public class Project {
 		return projectLeader;
 	}
 
-
 	public TeamProject getTeamProject() {
 		return teamProject;
 	}
-
 
 	public void setTeamProject(TeamProject teamProject) {
 		this.teamProject = teamProject;
 	}
 
-
 	public void setProjectLeader(String projectLeader) {
 		this.projectLeader = projectLeader;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
-
 	public String getProjectName() {
 		return projectName;
 	}
-
-
-
+	
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-
-
 
 	public String getProjectIdentifier() {
 		return projectIdentifier;
 	}
 
-
-
 	public void setProjectIdentifier(String projectIdentifier) {
 		this.projectIdentifier = projectIdentifier;
 	}
-
-
 
 	public String getDescription() {
 		return description;
 	}
 
-
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-
-
 	public Date getStart_date() {
 		return start_date;
 	}
-
-
 
 	public void setStart_date(Date start_date) {
 		this.start_date = start_date;
@@ -152,47 +132,33 @@ public class Project {
 		return teamMembers;
 	}
 
-
 	public void setTeamMembers(Set<TeamMember> teamMembers) {
 		this.teamMembers = teamMembers;
 	}
-
 
 	public Date getEnd_date() {
 		return end_date;
 	}
 
-
-
 	public void setEnd_date(Date end_date) {
 		this.end_date = end_date;
 	}
-
-
 
 	public Date getCreated_At() {
 		return created_At;
 	}
 
-
-
 	public void setCreated_At(Date created_At) {
 		this.created_At = created_At;
 	}
-
-
 
 	public Date getUpdated_At() {
 		return updated_At;
 	}
 
-
-
 	public void setUpdated_At(Date updated_At) {
 		this.updated_At = updated_At;
 	}
-
-
 
 	@PrePersist
 	protected void onCreate() {
@@ -203,12 +169,10 @@ public class Project {
 	protected void onUpdate() {
 		this.updated_At = new Date();
 	}
-
-
+	
 	public Backlog getBacklog() {
 		return backlog;
 	}
-
 
 	public void setBacklog(Backlog backlog) {
 		this.backlog = backlog;
@@ -218,10 +182,16 @@ public class Project {
 		return user;
 	}
 
-
 	public void setUser(User user) {
 		this.user = user;
 	}
 
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	
 }

@@ -105,6 +105,10 @@ public class ProjectService {
 		return projectRepository.findAllByProjectLeader(username);
 	}
 	
+	public Iterable<Project> findAllTeamProjects(String username){
+		
+	}
+	
 	public void deleteProjectByIdentifier(String projectId, String username) {
 		//Get the user's project by identifier
 		Project project = findProjectByIdentifier(projectId.toUpperCase(), username);
