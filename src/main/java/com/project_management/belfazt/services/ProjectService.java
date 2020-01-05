@@ -2,6 +2,7 @@ package com.project_management.belfazt.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,12 +10,16 @@ import org.springframework.stereotype.Service;
 import com.project_management.belfazt.dao.BacklogRepository;
 import com.project_management.belfazt.dao.ProjectRepository;
 import com.project_management.belfazt.dao.TeamMemberRepository;
+import com.project_management.belfazt.dao.TeamProjectRepository;
 import com.project_management.belfazt.dao.UserRepository;
 import com.project_management.belfazt.exceptions.ProjectIdException;
 import com.project_management.belfazt.exceptions.ProjectNotFoundException;
+import com.project_management.belfazt.exceptions.UserIsAlreadyATeamMemberException;
+import com.project_management.belfazt.exceptions.UserNotExistsException;
 import com.project_management.belfazt.model.Backlog;
 import com.project_management.belfazt.model.Project;
 import com.project_management.belfazt.model.TeamMember;
+import com.project_management.belfazt.model.TeamProject;
 import com.project_management.belfazt.model.User;
 
 
@@ -29,6 +34,8 @@ public class ProjectService {
 	private UserRepository userRepository;
 	@Autowired
 	private TeamMemberRepository teamMemberRepository;
+	@Autowired
+	private TeamProjectRepository teamProjectRepository;
 	
 	public Project saveOrUpdateProject(Project project, String username) {
 		
@@ -146,5 +153,56 @@ public class ProjectService {
 		
 		//Delete the project
 		projectRepository.delete(project);
+	}
+	
+	public void addTeamMember(String projectId, String teamMemberUsername, String username) {
+		
+		//Check if teamMate is existing user
+		User teamMemberUser = userRepository.findByUsername(teamMemberUsername);
+		
+		if(teamMemberUser == null) {
+			throw new UserNotExistsException("User " + teamMemberUsername + " does not exists");
+		}
+		
+		//Get the respective project
+		Project project = findProjectByIdentifier(projectId, username);
+		//Team members should be added only be the Team Leader, So check if projectLeader and Active users are same
+		if(!project.getProjectLeader().equals(username)) {
+			throw new ProjectNotFoundException("Your access is restricted to perform this action");
+		}
+		
+		//Get Active User
+		User user = userRepository.findByUsername(username);
+		//Get TeamProject
+		TeamProject teamProject = teamProjectRepository.findByTeamLeader(user);
+		//If current project is not a team project, then add it to team projects
+		if(teamProject == null) {
+			teamProject = new TeamProject();
+			//set relation
+			teamProject.setProject(project);
+			teamProject.setTeamLeader(user);
+			project.setTeamProject(teamProject);
+		}
+		
+		//Check if the selected user is already a team member
+		if(teamMemberRepository.findByTeamMemberAndProject(teamMemberUser, project) != null) {
+			throw new UserIsAlreadyATeamMemberException("The user '"+ teamMemberUsername +"' is already a team member in this project '"+projectId+"'");
+		}
+		
+		//Create TeamMember
+		TeamMember teamMember = new TeamMember();
+		//Set relations
+		teamMember.setProject(project);
+		teamMember.setTeamMember(teamMemberUser);
+		
+		//Add this teamMember to this project
+		Set<TeamMember> teamMembers = project.getTeamMembers();
+		teamMembers.add(teamMember);
+		
+		//Set the team members
+		project.setTeamMembers(teamMembers);
+		
+		//Save
+		projectRepository.save(project);
 	}
 }

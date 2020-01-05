@@ -68,8 +68,9 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{projectId}/team/add/{teamMember}")
-	public ResponseEntity<?> addUserToTeam(@PathVariable String projectId, @PathVariable String teamMember, Principal principal){
-		return new ResponseEntity<String>("", HttpStatus.OK);
+	public ResponseEntity<?> addTeamMember(@PathVariable String projectId, @PathVariable String teamMember, Principal principal){
+		projectService.addTeamMember(projectId, teamMember, principal.getName());
+		return new ResponseEntity<String>( teamMember+" is added as a team member", HttpStatus.OK);
 	}
 
 }
