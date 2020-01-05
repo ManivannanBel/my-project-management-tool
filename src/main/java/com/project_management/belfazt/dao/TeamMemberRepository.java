@@ -12,6 +12,8 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, Long>{
 	
 	Iterable<TeamMember> findByTeamMember(User member);
 	
+	Iterable<TeamMember> findByProject(Project project);
+	
 	TeamMember findByTeamMemberAndProject(User member, Project project);
 	
 }

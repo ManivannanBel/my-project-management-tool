@@ -22,6 +22,7 @@ import com.project_management.belfazt.model.Project;
 import com.project_management.belfazt.model.TeamMember;
 import com.project_management.belfazt.model.TeamProject;
 import com.project_management.belfazt.model.User;
+import com.project_management.belfazt.payload.TeamMemberResponse;
 
 
 @Service
@@ -205,5 +206,31 @@ public class ProjectService {
 		
 		//Save
 		projectRepository.save(project);
+	}
+	
+	public Iterable<TeamMemberResponse> getAllTeamMembers(String projectId, String username){
+		
+		Project project = findProjectByIdentifier(projectId, username);
+		Iterable<TeamMember> teamMembers = teamMemberRepository.findByProject(project);
+		
+		TeamProject teamProject = teamProjectRepository.findByProject(project);
+		
+		if(teamProject == null) {
+			return null;
+		}
+		
+		ArrayList<TeamMemberResponse> teamMembersList = new ArrayList<TeamMemberResponse>();
+		
+		User teamLeader = teamProject.getTeamLeader();
+		
+		teamMembersList.add(new TeamMemberResponse(teamLeader.getUsername(), teamLeader.getFullname()));
+		
+		for(TeamMember teamMember : teamMembers) {
+			User user = teamMember.getTeamMember();
+			TeamMemberResponse teamMemberResponse = new TeamMemberResponse(user.getUsername(), user.getFullname());
+			teamMembersList.add(teamMemberResponse);
+		}
+		
+		return teamMembersList;
 	}
 }

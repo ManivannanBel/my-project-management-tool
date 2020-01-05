@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project_management.belfazt.model.Project;
+import com.project_management.belfazt.payload.TeamMemberResponse;
 import com.project_management.belfazt.services.ProjectService;
 import com.project_management.belfazt.services.ValidationErrorService;
 
@@ -71,6 +72,12 @@ public class ProjectController {
 	public ResponseEntity<?> addTeamMember(@PathVariable String projectId, @PathVariable String teamMember, Principal principal){
 		projectService.addTeamMember(projectId, teamMember, principal.getName());
 		return new ResponseEntity<String>( teamMember+" is added as a team member", HttpStatus.OK);
+	}
+	
+	@GetMapping("/{projectId}/team")
+	public ResponseEntity<?> getTeamMembers(@PathVariable String projectId, Principal principal){
+		Iterable<TeamMemberResponse> teamMembers = projectService.getAllTeamMembers(projectId, principal.getName());
+		return new ResponseEntity<Iterable<TeamMemberResponse>>( teamMembers, HttpStatus.OK);
 	}
 
 }
