@@ -55,6 +55,12 @@ public class ProjectController {
 		return projectService.findAllProjects(principal.getName());
 	}
 	
+	@GetMapping("/teamProjects")
+	public Iterable<Project> getAllTeamProjects(Principal principal){
+		//System.out.println("\n\ncontroller\n\n");
+		return projectService.findAllTeamProjects(principal.getName());
+	}
+	
 	@DeleteMapping("{projectId}")
 	public ResponseEntity<?> deleteProject(@PathVariable String projectId, Principal principal){
 		projectService.deleteProjectByIdentifier(projectId, principal.getName());

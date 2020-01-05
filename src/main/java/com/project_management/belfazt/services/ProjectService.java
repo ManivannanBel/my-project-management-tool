@@ -1,16 +1,22 @@
 package com.project_management.belfazt.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project_management.belfazt.dao.BacklogRepository;
 import com.project_management.belfazt.dao.ProjectRepository;
+import com.project_management.belfazt.dao.TeamMemberRepository;
 import com.project_management.belfazt.dao.UserRepository;
 import com.project_management.belfazt.exceptions.ProjectIdException;
 import com.project_management.belfazt.exceptions.ProjectNotFoundException;
 import com.project_management.belfazt.model.Backlog;
 import com.project_management.belfazt.model.Project;
+import com.project_management.belfazt.model.TeamMember;
 import com.project_management.belfazt.model.User;
+
 
 @Service
 public class ProjectService {
@@ -21,6 +27,8 @@ public class ProjectService {
 	private BacklogRepository backlogRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private TeamMemberRepository teamMemberRepository;
 	
 	public Project saveOrUpdateProject(Project project, String username) {
 		
@@ -106,7 +114,13 @@ public class ProjectService {
 	}
 	
 	public Iterable<Project> findAllTeamProjects(String username){
-		
+		User user = userRepository.findByUsername(username);
+		Iterable<TeamMember> TeamInOthersProjects = teamMemberRepository.findByTeamMember(user);
+		List<Project> teamProjects = new ArrayList<Project>();
+		for(TeamMember tm : TeamInOthersProjects) {
+			teamProjects.add(tm.getProject());
+		}
+		return teamProjects;
 	}
 	
 	public void deleteProjectByIdentifier(String projectId, String username) {
