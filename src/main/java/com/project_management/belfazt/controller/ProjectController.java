@@ -57,7 +57,6 @@ public class ProjectController {
 	
 	@GetMapping("/teamProjects")
 	public Iterable<Project> getAllTeamProjects(Principal principal){
-		//System.out.println("\n\ncontroller\n\n");
 		return projectService.findAllTeamProjects(principal.getName());
 	}
 	

@@ -102,10 +102,17 @@ public class ProjectService {
 		}
 		
 		//To prevent getting projects from other users using id
-		if(!project.getProjectLeader().equals(username)) {
+		if(!project.getProjectLeader().equals(username) ) {
+			
+			//check if team member is accessing and grant access to team members
+			User teamMemberUser = userRepository.findByUsername(username);
+			TeamMember teamMember = teamMemberRepository.findByTeamMemberAndProject(teamMemberUser, project);
+			
+			if(teamMember != null)
+				return teamMember.getProject();
 			throw new ProjectNotFoundException("Project not found");
 		}
-		
+		//System.err.println(project.getProjectName());
 		return project;
 	}
 	
@@ -127,8 +134,14 @@ public class ProjectService {
 		//Get the user's project by identifier
 		Project project = findProjectByIdentifier(projectId.toUpperCase(), username);
 		
+		//Preventing team members from deleting the project, only team leader should delete
+		
 		if(project == null) {
 			throw new ProjectIdException("Project ID not "+ projectId.toUpperCase() +" found");
+		}
+		
+		if(!project.getProjectLeader().equals(username)) {
+			throw new ProjectNotFoundException("You dont have previlage to delete this project");
 		}
 		
 		//Delete the project

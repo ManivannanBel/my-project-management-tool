@@ -31,7 +31,7 @@ public class ProjectTaskService {
 			// X---XBacklog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
 			//Use project service to get the backlog, because you don't have to check correct user access again in this code
 			Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog();
-			
+			System.err.println("\n\n\nbacklog: "+ backlog +"\n\n\n\n");
 			try {
 				
 				projectIdentifier = projectIdentifier.toUpperCase();
@@ -60,8 +60,10 @@ public class ProjectTaskService {
 					projectTask.setStatus("TO_DO");
 				}
 				
+				System.err.println("\n\n"+ projectTask.getSummary() +"\n\n");
 				return projectTaskRepository.save(projectTask);
 			}catch (Exception e) {
+				System.err.println(e);
 				throw new ProjectNotFoundException("Project not found");
 			}
 		}
