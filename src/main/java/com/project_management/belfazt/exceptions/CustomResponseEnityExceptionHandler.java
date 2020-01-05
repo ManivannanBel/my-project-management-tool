@@ -41,4 +41,10 @@ public class CustomResponseEnityExceptionHandler extends ResponseEntityException
 		UserIsAlreadyATeamMemberExceptionResponse exceptionResponse = new UserIsAlreadyATeamMemberExceptionResponse(exception.getMessage());
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler
+	public final ResponseEntity<Object> handleAccessRestrictedExceptionException(AccessRestrictedException exception, WebRequest request){
+		AccessRestrictedExceptionResponse exceptionResponse = new AccessRestrictedExceptionResponse(exception.getMessage());
+		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.FORBIDDEN);
+	}
 }

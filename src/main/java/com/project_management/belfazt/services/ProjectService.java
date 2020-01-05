@@ -12,6 +12,7 @@ import com.project_management.belfazt.dao.ProjectRepository;
 import com.project_management.belfazt.dao.TeamMemberRepository;
 import com.project_management.belfazt.dao.TeamProjectRepository;
 import com.project_management.belfazt.dao.UserRepository;
+import com.project_management.belfazt.exceptions.AccessRestrictedException;
 import com.project_management.belfazt.exceptions.ProjectIdException;
 import com.project_management.belfazt.exceptions.ProjectNotFoundException;
 import com.project_management.belfazt.exceptions.UserIsAlreadyATeamMemberException;
@@ -168,7 +169,7 @@ public class ProjectService {
 		Project project = findProjectByIdentifier(projectId, username);
 		//Team members should be added only be the Team Leader, So check if projectLeader and Active users are same
 		if(!project.getProjectLeader().equals(username)) {
-			throw new ProjectNotFoundException("Your access is restricted to perform this action");
+			throw new AccessRestrictedException("Your access is restricted to perform this action");
 		}
 		
 		//Get Active User
